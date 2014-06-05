@@ -9,7 +9,7 @@ Instructions
 
 1) Require the module:
 
-    var jdbc = require('dh-400jdbc')();
+    var jdbc = require('dh-400jdbc');
     
 2) Build the config object:
 
@@ -21,6 +21,8 @@ Instructions
       secure: false,
       initialPoolCount: 10
     };
+    
+    jdbc.configure(config);
     
 3) Initialize the connection:
 

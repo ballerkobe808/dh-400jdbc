@@ -1,1 +1,1 @@
-module.exports = require("./lib/dh-400jdbc");
+module.exports = require('./lib/jdbcUtilities');
