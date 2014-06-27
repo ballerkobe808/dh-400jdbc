@@ -34,7 +34,7 @@ Instructions
     
 4) Execute a SQL query:
 
-    jdbc.executeSql('SELECT * FROM TABLENAME', function(err, results) {
+    jdbc.executeSqlString('SELECT * FROM TABLENAME', function(err, results) {
       if (err) {
         // HANDLE THE ERROR
       }
@@ -45,7 +45,7 @@ Instructions
 
 5) Execute a prepared statement query:
 
-    jdbc.prepareStatementWithParameterArray(sql, parameters, function (err, results) {
+    jdbc.executePreparedStatement(sql, parameters, function (err, results) {
       if (err) {
         // HANDLE THE ERROR
       }
@@ -56,7 +56,7 @@ Instructions
     
 6) Execute an update prepared statement:
 
-    jdbc.prepareStatementUpdateWithParameterArray(sql, parameters, function (err) {
+    jdbc.executeUpdatePreparedStatement(sql, parameters, function (err) {
       if (err) {
         // HANDLE THE ERROR
       }
