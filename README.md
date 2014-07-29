@@ -34,25 +34,35 @@ Instructions
     
 4) Execute a SQL query:
 
-    jdbc.executeSqlString('SELECT * FROM TABLENAME', function(err, results) {
-      if (err) {
-        // HANDLE THE ERROR
+    jdbc.executeSqlString('SELECT * FROM TABLENAME', 
+      // row processor.
+      function (row) {
+
+      },
+
+      // finished handler
+      function(err) {
+        if (err) {
+          // HANDLE THE ERROR
+        }
       }
-      
-      // HANDLE RESULTS
-      // results is an array of the returned rows.
-    });
+    );
 
 5) Execute a prepared statement query:
 
-    jdbc.executePreparedStatement(sql, parameters, function (err, results) {
-      if (err) {
-        // HANDLE THE ERROR
+    jdbc.executePreparedStatement(sql, parameters, 
+      // row processor.
+      function (row) {
+
+      },
+
+      // finished handler
+      function(err) {
+        if (err) {
+          // HANDLE THE ERROR
+        }
       }
-        
-      // HANDLE RESULTS
-      // results is an array of the returned rows.
-    });
+    );
     
 6) Execute an update prepared statement:
 
