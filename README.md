@@ -50,26 +50,24 @@ Instructions
 
 5) Execute a prepared statement query:
 
-    jdbc.executePreparedStatement(sql, parameters, 
-      // row processor.
-      function (row) {
-
-      },
-
-      // finished handler
-      function(err) {
+    jdbc.executePreparedStatement(sql, parameters, function(err, results) {
         if (err) {
           // HANDLE THE ERROR
         }
+
+        // proccess results.
       }
     );
     
 6) Execute an update prepared statement:
 
-    jdbc.executeUpdatePreparedStatement(sql, parameters, function (err) {
-      if (err) {
-        // HANDLE THE ERROR
+    jdbc.executeUpdatePreparedStatement(sql, parameters, function(err, results) {
+        if (err) {
+          // HANDLE THE ERROR
+        }
+
+        // proccess results.
       }
-    });
+    );
     
     
