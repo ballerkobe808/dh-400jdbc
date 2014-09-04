@@ -78,18 +78,27 @@ Instructions
       value: <any type>
     }
 
-  or use the convenience function:
+  or use the convenience functions:
 
-    var parameter = jdbc.createStoredProcedureParameter(parameterType, sqlDataType, fieldName, value);
+    var inputParameter = jdbc.createSPInputParameter(value);
+    var outputParameter = jdbc.createSPOutputParameter(sqlDataType, fieldName);
 
   execute the statement:
 
-    jdbc.executeStoredProcedure(sql, parameters, function(err, results) {
+    jdbc.executeStoredProcedure(sql, parameters, function(err, result) {
       if (err) {
           // HANDLE THE ERROR
         }
 
         // proccess results.
     });
+
+  Note: The result object is a key value object where the keys are the output parameter field names.
+
+  {
+    <field name 1> : <output param value 1>,
+    <field name 2> : <output param value 2>,
+    <field name 3> : <output param value 3>,
+  }
     
     
