@@ -68,7 +68,7 @@ Instructions
 
 7) Executing a stored procedure:
 
-  Note: the parameters array is an array of stored procudure parameter objects.
+  Note: the parameters array is an array of stored procedure parameter objects.
   You can create the objects in this format:
 
     {
@@ -99,6 +99,18 @@ Instructions
     <field name 1> : <output param value 1>,
     <field name 2> : <output param value 2>,
     <field name 3> : <output param value 3>,
+  }
+  
+  Note: If you stored procedure returns a 1 or more result sets you can access them through the result objects resultSets property.
+  The resultsSetsProperty is an array of arrays where each array is a single result set:
+  
+  {
+    resultSets: [
+      [
+      ],
+      [
+      ]
+    ]
   }
     
     
