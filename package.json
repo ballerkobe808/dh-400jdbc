@@ -1,22 +1,23 @@
 {
-    "name": "dh-400jdbc",
-    "version": "1.9.1",
-    "author": {
-        "name": "Michael Uranaka",
-        "email": "uranakam@gmail.com"
-    },
-    "dependencies": {
-        "java": "0.8.0",
-        "underscore": "1.8.3"
-    },
-    "main": "index",
-    "description": "JDBC Wrapper for as400 Databases",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/uranakam/dh-400jdbc.git"
-    },
-    "engines": {
-        "node": ">= 0.10"
-    },
-    "readmeFilename": "README.md"
+  "name": "dh-400jdbc",
+  "version": "1.9.2",
+  "author": {
+    "name": "Michael Uranaka",
+    "email": "uranakam@gmail.com"
+  },
+  "dependencies": {
+    "java": "0.8.0",
+    "underscore": "1.8.3"
+  },
+  "main": "index",
+  "description": "JDBC Wrapper for as400 Databases",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/uranakam/dh-400jdbc.git"
+  },
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "readmeFilename": "README.md",
+  "license": "(MIT OR Apache-2.0)"
 }
