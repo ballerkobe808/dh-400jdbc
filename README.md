@@ -47,7 +47,7 @@ Usage
    
 5. Execute an update prepared statement. Note: parameters is an array of values:
     ```
-    jdbc.executeUpdatePreparedStatement(sql, parameters, function(err, results) {
+    jdbc.executeUpdatePreparedStatement(sql, parameters, (err, results) => {
       // Do Something.
     });
     ```
@@ -66,13 +66,13 @@ Usage
    
     - Or use the convenience functions:
         ```
-        var inputParameter = jdbc.createSPInputParameter(value);
-        var outputParameter = jdbc.createSPOutputParameter(sqlDataType, fieldName);
+        let inputParameter = jdbc.createSPInputParameter(value);
+        let outputParameter = jdbc.createSPOutputParameter(sqlDataType, fieldName);
         ```
    
     - Execute the statement:
         ```
-        jdbc.executeStoredProcedure(sql, parameters, function(err, result) {
+        jdbc.executeStoredProcedure(sql, parameters, (err, result) => {
           // Do Something.
         });
         ```
