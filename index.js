@@ -82,33 +82,6 @@ exports.closeAll = (callback) => {
 //======================================================================================
 
 /**
- * Performs data insert on AS400.
- * @param tableName - The name of the table to insert to.
- * @param parameters - The parameters object of key/value pairs.
- * @param callback - The callback function. callback(err);
- */
-exports.insertData = (tableName, parameters, callback) => {
-  // check the prevent queries flag.
-  if (preventQueries) {
-    return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
-  }
-
-  // build the statement and params.
-  let sql = Utils.buildInsertStatement(tableName, parameters);
-  let values = Utils.objectToValueArray(parameters);
-
-  // execute the statement.
-  exports.executeUpdatePreparedStatement(sql, values, (err) => {
-    // check if an error occurred.
-    if (err) {
-      return callback(err);
-    }
-
-    return callback();
-  });
-};
-
-/**
  * Executes a sql string on the AS400.
  * @param sql
  * @param callback - The finished callback function when all rows have been processed.
@@ -119,21 +92,15 @@ exports.executeSqlString = (sql, callback) => {
     return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
   }
 
-  jdbc.initialize(config, (err) => {
-    if (err) {
-      return callback(err);
-    }
-
-    // execute the statement.
-    jdbc.execute(sql, callback);
-  });
+  // execute the query.
+  jdbc.executeQuery(sql, [], callback);
 };
 
 /**
  * Executes a sql string on the AS400.
  * @param sql
  * @param parameters
- * @param callback - The finished callback function when all rows have been processed.
+ * @param callback - The finished callback function.
  */
 exports.executePreparedStatement = (sql, parameters, callback) => {
   // check the prevent queries flag.
@@ -141,13 +108,8 @@ exports.executePreparedStatement = (sql, parameters, callback) => {
     return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
   }
 
-  jdbc.initialize(config, (err) => {
-    if (err) {
-      return callback(err);
-    }
-
-    jdbc.prepareStatementWithParameterArray(sql, parameters, callback);
-  });
+  // execute the query.
+  jdbc.executeQuery(sql, parameters, callback);
 };
 
 /**
@@ -162,13 +124,8 @@ exports.executeUpdatePreparedStatement = (sql, parameters, callback) => {
     return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
   }
 
-  jdbc.initialize(config, (err) => {
-    if (err) {
-      return callback(err);
-    }
-
-    jdbc.prepareStatementUpdateWithParameterArray(sql, parameters, callback);
-  });
+  // execute the statement.
+  jdbc.executeStatement(sql, parameters, callback);
 };
 
 /**
@@ -184,13 +141,8 @@ exports.executeUpdateStatementInTransaction = (connection, sql, parameters, call
     return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
   }
 
-  jdbc.initialize(config, (err) => {
-    if (err) {
-      return callback(err);
-    }
-
-    jdbc.prepareStatementUpdateWithParameterArrayInTransaction(connection, sql, parameters, callback);
-  });
+  // execute the statement.
+  jdbc.executeStatementInTransaction(connection, sql, parameters, callback);
 };
 
 /**
@@ -205,13 +157,8 @@ exports.executeStoredProcedure = (sql, parameters, callback) => {
     return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
   }
 
-  jdbc.initialize(config, (err) => {
-    if (err) {
-      return callback(err);
-    }
-
-    jdbc.executeStoredProcedure(sql, parameters, callback);
-  });
+  // execute the procedure.
+  jdbc.executeStoredProcedure(sql, parameters, callback);
 };
 
 /**
@@ -225,13 +172,29 @@ exports.runTransaction = (executeFunction, callback) => {
     return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
   }
 
-  jdbc.initialize(config, (err) => {
-    if (err) {
-      return callback(err);
-    }
+  // execute the transaction.
+  jdbc.runTransaction(executeFunction, callback);
+};
 
-    jdbc.runTransaction(executeFunction, callback);
-  });
+
+/**
+ * Performs data insert on AS400.
+ * @param tableName - The name of the table to insert to.
+ * @param parameters - The parameters object of key/value pairs.
+ * @param callback - The callback function. callback(err);
+ */
+exports.insertData = (tableName, parameters, callback) => {
+  // check the prevent queries flag.
+  if (preventQueries) {
+    return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
+  }
+
+  // build the statement and params.
+  let sql = Utils.buildInsertStatement(tableName, parameters);
+  let values = Utils.objectToValueArray(parameters);
+
+  // execute the insert statement.
+  jdbc.executeStatement(sql, values, callback);
 };
 
 //======================================================================================
