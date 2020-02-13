@@ -4,6 +4,7 @@
 const JDBC = require('./lib/jdbc');
 const sqlTypes = require('./lib/constants/sql-types').types;
 const parameterTypes = require('./lib/constants/parameter-types');
+const Utils = require('./lib/utilities');
 
 // driver.
 let jdbc = null;
@@ -14,6 +15,14 @@ let preventQueries = false;
 // Reference to the logger. Defaults to console.
 // NOTE: This assumes the logger has a .info, .warn, and .error function.
 let logger = console;
+
+// add the sql types and parameter types mapping objects as an exports properties.
+exports.sqlTypes = sqlTypes;
+exports.parameterTypes = parameterTypes;
+
+//======================================================================================
+// Getters and Setters.
+//======================================================================================
 
 /**
  * Sets the prevent queries flag.
@@ -31,59 +40,46 @@ exports.getPreventQueries = () => {
   return preventQueries;
 };
 
-// add the sql types and parameter types mapping objects as an exports properties.
-exports.sqlTypes = sqlTypes;
-exports.parameterTypes = parameterTypes;
+//======================================================================================
+// Configuration Functions.
+//======================================================================================
 
 /**
- * Configures the driver.
- * @param serverName - The server name.
- * @param libraries - The libraries to connect to.
- * @param user - The user name.
- * @param password - The password.
- * @param initialPoolCount - The initial number of connections you want to allocate in the connection pool.
+ * Initializes the jdbc connection.
+ * @param options - The db options.
+ * @param callback - The finished callback function.
  */
-exports.configure = (serverName, libraries, user, password, initialPoolCount) => {
-  config = {
-    serverName: serverName,
-    libraries: libraries,
-    user: user,
-    password: password,
-    initialPoolCount: initialPoolCount
-  };
-};
+exports.initialize = (options, callback) => {
+  // if logger is set.
+  if (_.has(options, 'logger')) {
+    logger = options.logger;
+  }
 
-/**
- * Getter function for the jdbc driver.
- * @return {JDBCConn}
- */
-exports.getDriver = () => {
-  return jdbc;
-};
+  // set the jdbc driver.
+  jdbc = new JDBC({
+    host: options.host,
+    libraries: options.libraries,
+    username: options.username,
+    password: options.password,
+    logger: logger,
+    initialPoolCount: options.initialPoolCount
+  });
 
-/**
- * Sets the logger reference.
- * @param loggerRef - The logger reference.
- */
-exports.setLogger = (loggerRef) => {
-  logger = loggerRef;
-  jdbc.setLogger(logger);
-};
-
-/**
- * Sets the config object to the one specified.
- * @param configObject - The driver config object.
- */
-exports.setConfig = (configObject) => {
-  config = configObject;
+  // connect.
+  jdbc.connect(callback);
 };
 
 /**
  * Closes all connections in the pool.
+ * @param callback - The finished callback function.
  */
-exports.closeAll = () => {
-  jdbc.close();
+exports.closeAll = (callback) => {
+  jdbc.close(callback);
 };
+
+//======================================================================================
+// Query and Statement Functions.
+//======================================================================================
 
 /**
  * Performs data insert on AS400.
@@ -98,8 +94,8 @@ exports.insertData = (tableName, parameters, callback) => {
   }
 
   // build the statement and params.
-  let sql = buildInsertStatement(tableName, parameters);
-  let values = objectToValueArray(parameters);
+  let sql = Utils.buildInsertStatement(tableName, parameters);
+  let values = Utils.objectToValueArray(parameters);
 
   // execute the statement.
   exports.executeUpdatePreparedStatement(sql, values, (err) => {
@@ -110,50 +106,6 @@ exports.insertData = (tableName, parameters, callback) => {
 
     return callback();
   });
-};
-
-/**
- * Initializes the jdbc connection.
- * @param callback
- */
-exports.initializeConnection = (callback) => {
-  // check the prevent queries flag.
-  if (preventQueries) {
-    return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
-  }
-
-  // initialize the connection.
-  jdbc.initialize(config, callback);
-};
-
-/**
- * Initializes the jdbc connection.
- * @param conf - the config object to use.
- * @param callback
- */
-exports.initializeConnectionWithConfig = (conf, callback) => {
-  // check the prevent queries flag.
-  if (preventQueries) {
-    return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
-  }
-
-  // initialize the connection.
-  jdbc.initialize(conf, callback);
-};
-
-/**
- * Re-initializes the jdbc connection pool.
- * @param newConfig - The new config object.
- * @param callback
- */
-exports.reInitialize = (newConfig, callback) => {
-  // check the prevent queries flag.
-  if (preventQueries) {
-    return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
-  }
-
-  // reinitialize the connection.
-  jdbc.reInitialize(newConfig, callback);
 };
 
 /**
@@ -263,6 +215,30 @@ exports.executeStoredProcedure = (sql, parameters, callback) => {
 };
 
 /**
+ * Runs a transaction on the database.
+ * @param executeFunction - The function containing all the statements to be run in the transaction. executeFunction(connection, callback);
+ * @param callback - The finished callback function.
+ */
+exports.runTransaction = (executeFunction, callback) => {
+  // check the prevent queries flag.
+  if (preventQueries) {
+    return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
+  }
+
+  jdbc.initialize(config, (err) => {
+    if (err) {
+      return callback(err);
+    }
+
+    jdbc.runTransaction(executeFunction, callback);
+  });
+};
+
+//======================================================================================
+// Create Parameter Functions.
+//======================================================================================
+
+/**
  * Creates an input field parameter object for the stored procedure parameters array call.
  * @param value - The actual value.
  */
@@ -284,24 +260,4 @@ exports.createSPOutputParameter = (sqlDataType, fieldName) => {
     fieldName: fieldName,
     dataType: sqlDataType
   };
-};
-
-/**
- * Runs a transaction on the database.
- * @param executeFunction - The function containing all the statements to be run in the transaction. executeFunction(connection, callback);
- * @param callback - The finished callback function.
- */
-exports.runTransaction = (executeFunction, callback) => {
-  // check the prevent queries flag.
-  if (preventQueries) {
-    return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
-  }
-
-  jdbc.initialize(config, (err) => {
-    if (err) {
-      return callback(err);
-    }
-
-    jdbc.runTransaction(executeFunction, callback);
-  });
 };
