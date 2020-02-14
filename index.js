@@ -1,6 +1,7 @@
 'use strict';
 
 // Get a reference to the jdbc driver.
+const _ = require('lodash');
 const JDBC = require('./lib/jdbc');
 const sqlTypes = require('./lib/constants/sql-types').types;
 const parameterTypes = require('./lib/constants/parameter-types');
