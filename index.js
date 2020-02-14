@@ -57,14 +57,7 @@ exports.initialize = (options, callback) => {
   }
 
   // set the jdbc driver.
-  jdbc = new JDBC({
-    host: options.host,
-    libraries: options.libraries,
-    username: options.username,
-    password: options.password,
-    logger: logger,
-    initialPoolCount: options.initialPoolCount
-  });
+  jdbc = new JDBC(options);
 
   // connect.
   jdbc.connect(callback);
