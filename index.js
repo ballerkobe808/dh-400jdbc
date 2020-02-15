@@ -5,7 +5,6 @@ const _ = require('lodash');
 const JDBC = require('./lib/jdbc');
 const sqlTypes = require('./lib/constants/sql-types').types;
 const parameterTypes = require('./lib/constants/parameter-types');
-const Utils = require('./lib/utilities');
 
 // driver.
 let jdbc = null;
@@ -168,27 +167,6 @@ exports.runTransaction = (executeFunction, callback) => {
 
   // execute the transaction.
   jdbc.runTransaction(executeFunction, callback);
-};
-
-
-/**
- * Performs data insert on AS400.
- * @param tableName - The name of the table to insert to.
- * @param parameters - The parameters object of key/value pairs.
- * @param callback - The callback function. callback(err);
- */
-exports.insertData = (tableName, parameters, callback) => {
-  // check the prevent queries flag.
-  if (preventQueries) {
-    return callback(new Error('Prevent queries flag is on. Maintenance is being performed.'));
-  }
-
-  // build the statement and params.
-  let sql = Utils.buildInsertStatement(tableName, parameters);
-  let values = Utils.objectToValueArray(parameters);
-
-  // execute the insert statement.
-  jdbc.executeStatement(sql, values, callback);
 };
 
 //======================================================================================
