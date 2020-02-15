@@ -1,13 +1,13 @@
 {
   "name": "dh-400jdbc",
-  "version": "1.9.5",
+  "version": "2.1.0",
   "author": {
     "name": "Michael Uranaka",
     "email": "uranakam@gmail.com"
   },
   "dependencies": {
-    "java": "0.8.0",
-    "underscore": "1.8.3"
+    "java": "0.12.1",
+    "lodash": "4.17.15"
   },
   "main": "index",
   "description": "JDBC Wrapper for as400 Databases",
@@ -16,7 +16,7 @@
     "url": "git://github.com/uranakam/dh-400jdbc.git"
   },
   "engines": {
-    "node": ">= 0.10"
+    "node": ">= 12.0"
   },
   "readmeFilename": "README.md",
   "license": "(MIT OR Apache-2.0)"
