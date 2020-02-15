@@ -21,8 +21,8 @@ Usage
       libraries: <String>,
       username: <String>,
       password: <String>,
-      initialPoolCount: <Number>,
-      logger: <Logger Reference>
+      initialPoolCount: <Number>, // Optional, Defaults to 1.
+      logger: <Logger Reference> // Optional, Defaults to console.
     };
    
     // initialize the module.
@@ -86,9 +86,11 @@ Usage
         }
         ```
       
-    - Note: If you stored procedure returns a 1 or more result sets you can access them through the result objects resultSets property. The resultsSetsProperty is an array of arrays where each array is a single result set:
+    - Note: If your stored procedure returns 1 or more result sets you can access them through the result objects resultSets property. The resultsSetsProperty is an array of arrays where each array is a single result set:
         ```
         {
+          outputParam1: <value>,
+          outputParam2: <value>,
           resultSets: [
             [],
             []
