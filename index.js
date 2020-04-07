@@ -5,6 +5,7 @@ const _ = require('lodash');
 const JDBC = require('./lib/jdbc');
 const sqlTypes = require('./lib/constants/sql-types').types;
 const parameterTypes = require('./lib/constants/parameter-types');
+const Utils = require('./lib/utilities');
 
 // driver.
 let jdbc = null;
@@ -180,7 +181,7 @@ exports.runTransaction = (executeFunction, callback) => {
 exports.createSPInputParameter = (value) => {
   return {
     type: parameterTypes.INPUT_PARAM,
-    value: value
+    value: Utils.convertNulls(value)
   };
 };
 
