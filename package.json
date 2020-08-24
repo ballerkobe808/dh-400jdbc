@@ -1,13 +1,13 @@
 {
   "name": "dh-400jdbc",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "author": {
     "name": "Michael Uranaka",
     "email": "uranakam@gmail.com"
   },
   "dependencies": {
     "java": "0.12.1",
-    "lodash": "4.17.19"
+    "lodash": "4.17.20"
   },
   "main": "index",
   "description": "JDBC Wrapper for as400 Databases",
