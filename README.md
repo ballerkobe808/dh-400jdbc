@@ -1,7 +1,15 @@
-DH-400JDBC
-===========
+DH-400JDBC-SP
+==============
 
-JDBC Wrapper for the JT400 driver to connect to an AS400 using JDBC.
+JDBC Wrapper for the JT400 driver to connect to an AS400 using JDBC, resolving issues with original package (npmjs.com/package/dh-400jdbc) when calling Store Procedures.
+
+
+Original code
+=============
+
+Repository: https://github.com/ballerkobe808/dh-400jdbc.git
+
+License: https://github.com/adaligaji/dh-400jdbc/blob/master/LICENSE
 
 
 Usage

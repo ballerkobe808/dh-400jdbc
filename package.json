@@ -1,23 +1,29 @@
 {
-  "name": "dh-400jdbc",
+  "name": "dh-400jdbc2",
   "version": "2.1.5",
-  "author": {
-    "name": "Michael Uranaka",
-    "email": "uranakam@gmail.com"
-  },
+  "author": "Adali Garrán <adaligaji@gmail.com>",
   "dependencies": {
     "java": "^0.12.1",
     "lodash": "^4.17.20"
   },
   "main": "index",
-  "description": "JDBC Wrapper for as400 Databases",
+  "description": "JDBC Wrapper for as400 Databases patch",
   "repository": {
     "type": "git",
-    "url": "git://github.com/uranakam/dh-400jdbc.git"
+    "url": "git+https://github.com/adaligaji/dh-400jdbc.git"
   },
   "engines": {
     "node": ">= 12.0"
   },
-  "readmeFilename": "README.md",
-  "license": "(MIT OR Apache-2.0)"
+  "license": "(MIT OR Apache-2.0)",
+  "bugs": {
+    "url": "https://github.com/adaligaji/dh-400jdbc/issues"
+  },
+  "homepage": "https://github.com/adaligaji/dh-400jdbc#readme",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }
